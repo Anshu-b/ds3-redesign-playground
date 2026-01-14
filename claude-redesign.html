@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Student Society</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: #2d2d30;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #3e3e42;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff8c42;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #d4d4d4;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff8c42;
+        }
+
+        .btn-login {
+            background: #ff8c42;
+            color: #1e1e1e;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #ff9d5c;
+        }
+
+        /* Main Content */
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .cell {
+            background: #2d2d30;
+            border-left: 4px solid #3794ff;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .cell-header {
+            background: #252526;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .cell-label {
+            color: #3794ff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .cell-content {
+            padding: 2rem;
+        }
+
+        .cell-output {
+            background: #1e1e1e;
+            padding: 2rem;
+            border-top: 1px solid #3e3e42;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ff8c42 0%, #3794ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: #b4b4b4;
+            margin-bottom: 2rem;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            border: 1px solid #3e3e42;
+        }
+
+        .code-keyword {
+            color: #c586c0;
+        }
+
+        .code-function {
+            color: #dcdcaa;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .image-placeholder {
+            background: #252526;
+            border-radius: 4px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            border: 1px solid #3e3e42;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number.orange {
+            color: #ff8c42;
+        }
+
+        .stat-number.cyan {
+            color: #3794ff;
+        }
+
+        .stat-number.gray {
+            color: #888;
+        }
+
+        .stat-number.white {
+            color: #fff;
+        }
+
+        .stat-label {
+            color: #b4b4b4;
+            font-size: 0.95rem;
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: #3e3e42;
+            height: 80px;
+            margin: auto 0;
+        }
+
+        /* Browser-style Cards */
+        .browser-card {
+            background: #1a1a1a;
+            border: 1px solid #3e3e42;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .browser-header {
+            background: #252526;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .browser-url {
+            color: #888;
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+            margin-left: 1rem;
+        }
+
+        .browser-content {
+            padding: 2rem;
+        }
+
+        .browser-content img {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        /* Two Column Browser Grid */
+        .browser-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Article Cards */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .article-card {
+            background: #1a1a1a;
+            border: 1px solid #3e3e42;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            border-color: #ff8c42;
+        }
+
+        .article-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #252526;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .article-description {
+            color: #b4b4b4;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            background: #ff8c42;
+            color: #1e1e1e;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .read-more:hover {
+            background: #ff9d5c;
+        }
+
+        /* Partners Grid */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem 2rem;
+            margin: 3rem 0;
+            align-items: center;
+        }
+
+        .partner-logo {
+            background: #252526;
+            padding: 2rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 3/2;
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: #ff8c42;
+            color: #1e1e1e;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #ff9d5c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #3794ff;
+            padding: 1rem 2.5rem;
+            border: 2px solid #3794ff;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(55, 148, 255, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #d4d4d4;
+            padding: 0.75rem 2rem;
+            border: 2px solid #d4d4d4;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff8c42;
+            color: #ff8c42;
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .btn-view-all {
+            background: transparent;
+            color: #fff;
+            padding: 1rem 3rem;
+            border: 2px solid #ff8c42;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-view-all:hover {
+            background: #ff8c42;
+            color: #1e1e1e;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            border-top: 1px solid #3e3e42;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            color: #888;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #ff8c42;
+        }
+
+        @media (max-width: 968px) {
+            .two-column, .browser-grid, .stats-grid, .article-grid, .partners-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .stat-divider {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">DS3</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#datahacks">DataHacks</a></li>
+                <li><a href="#partners">Partners</a></li>
+            </ul>
+            <a href="#" class="btn-login">MEMBERS LOGIN</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <!-- Hero Cell -->
+        <div class="cell">
+            <div class="cell-header">
+                <span class="cell-label">In [1]:</span>
+            </div>
+            <!-- <div class="cell-content">
+                <div class="code-block">
+                    <span class="code-keyword">import</span> ds3<br>
+                    <span class="code-keyword">from</span> community <span class="code-keyword">import</span> innovation, collaboration<br>
+                    <br>
+                    <span class="code-comment"># Initialize your data science journey</span><br>
+                    ds3.<span class="code-function">join</span>(<span class="code-string">"UCSD"</span>)
+                </div>
+            </div> -->
+            <div class="cell-output">
+                <h1><span class="gradient-text">Data Science Student Society</span></h1>
+                <p class="tagline">Expanding the horizons of data science through community, curiosity, and collaboration.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="#join" class="btn-primary">JOIN US</a>
+                    <a href="#about" class="btn-secondary">LEARN MORE</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Cell -->
+        <div class="cell" id="about">
+            <div class="cell-header">
+                <span class="cell-label">In [2]:</span>
+            </div>
+            <div class="cell-content">
+                <div class="code-block">
+                    <span class="code-comment"># Learn about our community</span><br>
+                    ds3.<span class="code-function">describe</span>()
+                </div>
+            </div>
+            <div class="cell-output">
+                <h2>ABOUT US</h2>
+                
+                <div class="two-column" style="margin-bottom: 3rem;">
+                    <div class="image-placeholder">
+                        [Group collaboration photo]
+                    </div>
+                    <div>
+                        <h3>WHO WE ARE</h3>
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem; color: #fff;">Together, we collaborate, learn, and lead the future of data science.</p>
+                        <p style="color: #b4b4b4; margin-bottom: 1.5rem;">We're a diverse community of students passionate about data, technology, and solving real-world problems.</p>
+                        <a href="#team" class="btn-outline">OUR TEAM</a>
+                    </div>
+                </div>
+
+                <div class="two-column" style="margin-bottom: 3rem;">
+                    <div>
+                        <h3>WHAT WE DO</h3>
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem; color: #fff;">From workshops to online articles – we turn curiosity into capability.</p>
+                        <p style="color: #b4b4b4; margin-bottom: 1.5rem;">We provide opportunities to build technical skills, gain real-world experience, and network with industry & peers.</p>
+                        <a href="#events" class="btn-outline">EVENTS</a>
+                    </div>
+                    <div class="image-placeholder">
+                        [Event with dinosaur costume photo]
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="image-placeholder">
+                        [Students coding photo]
+                    </div>
+                    <div>
+                        <h3>HOW TO GET INVOLVED</h3>
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem; color: #fff;">Projects. Consulting. DataHacks. Big-Little. Your journey starts here.</p>
+                        <p style="color: #b4b4b4; margin-bottom: 1.5rem;">Explore weekly professional & social events, quarterly projects, and real-world consulting open for all majors & skill levels.</p>
+                        <a href="#involved" class="btn-outline">GET INVOLVED</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Get Involved Cell -->
+        <div class="cell" id="involved">
+            <div class="cell-header">
+                <span class="cell-label">In [3]:</span>
+            </div>
+            <div class="cell-content">
+                <div class="code-block">
+                    <span class="code-comment"># Discover our impact</span><br>
+                    stats = ds3.<span class="code-function">get_impact_metrics</span>()<br>
+                    <span class="code-function">display</span>(stats)
+                </div>
+            </div>
+            <div class="cell-output">
+                <h2 style="text-align: center; margin-bottom: 3rem;">GET INVOLVED</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number orange">700+</div>
+                        <div class="stat-label">DataHacks Attendees</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number cyan">100+</div>
+                        <div class="stat-label">Workshops Hosted</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number gray">500+</div>
+                        <div class="stat-label">Active Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number white">50+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                </div>
+
+                <div class="browser-grid" style="margin-top: 3rem;">
+                    <div class="browser-card">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="browser-url">www.ds3ucsd.com/datahacks</div>
+                        </div>
+                        <div class="browser-content">
+                            <h3>DataHacks</h3>
+                            <div class="image-placeholder" style="margin: 1rem 0;">
+                                [DataHacks 2025 team photo]
+                            </div>
+                            <p style="color: #b4b4b4;">Over one action-packed weekend, participants work with real-world datasets, build innovative solutions, and present their projects to professors & industry judges—gaining experience, mentorship, and new connections along the way.</p>
+                        </div>
+                    </div>
+
+                    <div class="browser-card">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="browser-url">www.ds3ucsd.com/projects</div>
+                        </div>
+                        <div class="browser-content">
+                            <h3>Projects & Consulting</h3>
+                            <div class="image-placeholder" style="margin: 1rem 0;">
+                                [Students working on projects photo]
+                            </div>
+                            <p style="color: #b4b4b4;">From language models to nonprofit partnerships, our projects and consulting teams give students the chance to collaborate, grow professionally, and land research or internship opportunities through their work.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="browser-grid" style="margin-top: 2rem;">
+                    <div class="browser-card">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="browser-url">www.ds3ucsd.com/events/workshops</div>
+                        </div>
+                        <div class="browser-content">
+                            <h3>Workshops</h3>
+                            <div class="image-placeholder" style="margin: 1rem 0;">
+                                [Workshop session photo]
+                            </div>
+                            <p style="color: #b4b4b4;">Dive into topics like Python, machine learning, data visualization, and AI—designed for all skill levels. Our workshops help you build practical skills directly applicable to research and internships, ask questions, and grow at your own pace.</p>
+                        </div>
+                    </div>
+
+                    <div class="browser-card">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="browser-url">www.ds3ucsd.com/events/professional</div>
+                        </div>
+                        <div class="browser-content">
+                            <h3>Social & Professional Events</h3>
+                            <div class="image-placeholder" style="margin: 1rem 0;">
+                                [Social event group photo]
+                            </div>
+                            <p style="color: #b4b4b4;">Engage with faculty & industry through panels, talks, & DS3 career fairs to gain mentorship & career advice. Join beach bonfires, ice-skating nights, and our Big-Little mentorship program to build lasting friendships and a stronger DS3 community.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Online Content Cell -->
+        <div class="cell">
+            <div class="cell-header">
+                <span class="cell-label">In [4]:</span>
+            </div>
+            <div class="cell-content">
+                <div class="code-block">
+                    <span class="code-comment"># Browse our latest content</span><br>
+                    articles = ds3.<span class="code-function">get_articles</span>(limit=<span class="code-number">3</span>)<br>
+                    <span class="code-keyword">for</span> article <span class="code-keyword">in</span> articles:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(article)
+                </div>
+            </div>
+            <div class="cell-output">
+                <h2 style="text-align: center; margin-bottom: 1rem;">ONLINE CONTENT</h2>
+                <p style="text-align: center; color: #b4b4b4; margin-bottom: 2rem;">Have something to share or want to explore more? Read our latest articles or submit your own for publication!</p>
+                
+                <div class="article-grid">
+                    <div class="article-card">
+                        <div class="article-image">[Stock market visualization]</div>
+                        <div class="article-content">
+                            <div class="article-title">Mastering the Markets</div>
+                            <div class="article-description">In the stock day trading world, millions of decisions must be made every second. Now imagine an AI that could perform the same tasks, eliminating exhaustive time spent.</div>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </div>
+
+                    <div class="article-card">
+                        <div class="article-image">[CAPTCHA illustration]</div>
+                        <div class="article-content">
+                            <div class="article-title">AI-Solving CAPTCHAs</div>
+                            <div class="article-description">How many times have you had to fill out a CAPTCHA while signing up for anything? Bots nowadays can solve these puzzles better, on average, than human users. So what's the point?</div>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </div>
+
+                    <div class="article-card">
+                        <div class="article-image">[Matrix visualization]</div>
+                        <div class="article-content">
+                            <div class="article-title">Matrices for Speech</div>
+                            <div class="article-description">Services like Google Translate seem to amazingly understand the meaning behind thousands of languages, contexts, and accents. But how? Through matrices.</div>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="view-all">
+                    <button class="btn-view-all">VIEW ALL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Partners Cell -->
+        <div class="cell" id="partners">
+            <div class="cell-header">
+                <span class="cell-label">In [5]:</span>
+            </div>
+            <div class="cell-content">
+                <div class="code-block">
+                    <span class="code-comment"># Our industry partners and sponsors</span><br>
+                    partners = ds3.<span class="code-function">get_partners</span>()<br>
+                    <span class="code-function">display</span>(partners)
+                </div>
+            </div>
+            <div class="cell-output">
+                <h2 style="text-align: center; margin-bottom: 1rem;">OUR PARTNERS</h2>
+                <p style="text-align: center; color: #b4b4b4; margin-bottom: 3rem;">
+                    Interested in hearing how we can help you? Contact us at 
+                    <a href="mailto:ds3@ucsd.edu" style="color: #3794ff;">ds3@ucsd.edu</a> 
+                    or view our sponsor package.
+                </p>
+
+                <div class="partners-grid">
+                    <div class="partner-logo">Apple</div>
+                    <div class="partner-logo">Deloitte</div>
+                    <div class="partner-logo">Facebook</div>
+                    <div class="partner-logo">FedEx</div>
+                    <div class="partner-logo">FICO</div>
+                    <div class="partner-logo">Intel</div>
+                    <div class="partner-logo">Rockstar Games</div>
+                    <div class="partner-logo">GitHub</div>
+                    <div class="partner-logo">HP</div>
+                    <div class="partner-logo">UC San Diego<br>Rady School</div>
+                    <div class="partner-logo">San Diego<br>Padres</div>
+                    <div class="partner-logo">US Navy</div>
+                    <div class="partner-logo">NVIDIA</div>
+                    <div class="partner-logo">CSE UCSD</div>
+                    <div class="partner-logo">Airtable</div>
+                    <div class="partner-logo">ServiceNow</div>
+                    <div class="partner-logo">ASML</div>
+                    <div class="partner-logo">Blizzard</div>
+                    <div class="partner-logo">Marimo</div>
+                    <div class="partner-logo">Palantir</div>
+                    <div class="partner-logo">IBM</div>
+                    <div class="partner-logo">Proofpoint</div>
+                    <div class="partner-logo">Anthropic</div>
+                    <div class="partner-logo">ServiceNow</div>
+                    <div class="partner-logo">TRACE3</div>
+                    <div class="partner-logo">Island<br>Innovation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="logo" style="margin-bottom: 0.5rem;">DS3 @ UC SAN DIEGO</div>
+                <div class="footer-text">© 2025 All Rights Reserved</div>
+            </div>
+            <div class="social-links">
+                <a href="#">Discord</a>
+                <a href="#">Spotify</a>
+                <a href="#">Instagram</a>
+                <a href="#">Medium</a>
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Email</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
